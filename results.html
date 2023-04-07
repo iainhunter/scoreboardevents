@@ -133,7 +133,7 @@ var numRows = 0;
 var numResults = 0;
 var pageNum = 1;
 var pageWait = -5;
-var numRunners = 0;
+var numAthletes = 0;
 	
 document.getElementById("databody").height = numRows * 31;
     
@@ -313,7 +313,12 @@ function fadeIn(element) {
 			//Check if data changed
 			console.log("Message arrived");
             const newbody = JSON.parse(e.data);
-			
+
+
+  // Do something with the binary data here
+
+
+
 			console.log(newbody);
 			if (body!==newbody) {
 				dataChanged = true;
@@ -322,19 +327,19 @@ function fadeIn(element) {
 			clearInterval(pageTimer);
 			dataChanged = false;
 			startList = true;
-			//Find number of runners
-			numRunners = body.results.length;
+			//Find number of results
+			numAthletes = body.results.length;
 			
 			//Check if results exist and count results
 			numResults = 0;
 			startList = true;
-			for (i = 0; i < numRunners; i++) {
+			for (i = 0; i < numAthletes; i++) {
 				if (body.results[i].mark != "") {
 					numResults = numResults + 1;
 					startList=false;
 				}
 			}
-			if (numRunners<10 && numResults>0) {
+			if (numAthletes<10 && numResults>0) {
 				numRows = numResults;
 			}
 		
@@ -384,12 +389,12 @@ function fadeIn(element) {
             var i;
 			
 			if (startList==true) {
-				if (numRunners<10) {
+				if (numAthletes<10) {
 				//Case for one page of results
 				clearInterval(pageTimer);
 				document.getElementById("databody").style.top = "0px";
-				changeRows(numRunners);
-				for (i = 0; i < numRunners; i++) {
+				changeRows(numAthletes);
+				for (i = 0; i < numAthletes; i++) {
 					document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
 					document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
 					if (body.results[i].place == "DNF") { body.results[i].place = "NF"; }
@@ -400,7 +405,7 @@ function fadeIn(element) {
 					var logotext = new String(body.results[i].team);
 					document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
 				}
-				for (i = parseInt(numRunners+1); i < 9; i++) {
+				for (i = parseInt(numAthletes+1); i < 9; i++) {
 					document.getElementById("name0" + (i)).innerHTML = "";
 					document.getElementById("abbr0" + (i)).innerHTML = "";
 					document.getElementById("mark0" + (i)).innerHTML = "";
@@ -416,25 +421,25 @@ function fadeIn(element) {
 			}
 			else
 				{
-					if (numRunners<10) {
+					if (numAthletes<10) {
 				//Case for one page of results
 				clearInterval(pageTimer);
 				document.getElementById("databody").style.top = "0px";
 				//changeRows(numResults);
-				for (i = 0; i < numRunners; i++) {
+				for (i = 0; i < numAthletes; i++) {
 					document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
 					document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
 					if (body.results[i].place == "DNF") { body.results[i].place = "NF"; }
 					if (body.results[i].place == "DNS") { body.results[i].place = "NS"; }
 					console.log("Place (" + i + "): " + body.results[i].place);
-					console.log("Num Runners: ") + numRunners;
+					console.log("Num Runners: ") + numAthletes;
 					document.getElementById("place0" + (i + 1)).innerHTML = new String(body.results[i].place);
 					document.getElementById("abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
 					document.getElementById("mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
 					var logotext = new String(body.results[i].team);
 					document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
 				}
-				for (i = parseInt(numRunners+1); i < 9; i++) {
+				for (i = parseInt(numAthletes+1); i < 9; i++) {
 					document.getElementById("name0" + (i)).innerHTML = "";
 					document.getElementById("abbr0" + (i)).innerHTML = "";
 					document.getElementById("mark0" + (i)).innerHTML = "";
@@ -454,15 +459,15 @@ function fadeIn(element) {
 		function pageResults() {
 			if (startList==true) {
 			//Calculate number of pages for startlists
-			var numPages = Math.floor((numRunners-1)/9)+1;
+			var numPages = Math.floor((numAthletes-1)/9)+1;
 			var row = 0;
 			var displayNum=0;
-			if (numRunners-9*(pageNum-1)>8) {
+			if (numAthletes-9*(pageNum-1)>8) {
 				displayNum = 9;
 			}
 			else
 			{
-				displayNum = (numRunners-9*(pageNum-1));
+				displayNum = (numAthletes-9*(pageNum-1));
 			}
 			changeRows(displayNum);
 			for (i = 0; i < displayNum; i++) {

@@ -1,4 +1,5 @@
 const fs = require('fs');
+const csv = require('csv-parser');
 const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({ port: 1515 });
@@ -12,14 +13,18 @@ fs.watchFile(folderPath, (curr, prev) => {
       if (err) throw err;
       files.forEach((filename) => {
         const filePath = `${folderPath}/${filename}`;
-        fs.readFile(filePath, (err, data) => {
-          if (err) throw err;
-          wss.clients.forEach((client) => {
-            if (client.readyState === WebSocket.OPEN) {
-              client.send(data);
-            }
+        fs.createReadStream(filePath)
+          .pipe(csv())
+          .on('data', (row) => {
+            wss.clients.forEach((client) => {
+              if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify(row));
+              }
+            });
+          })
+          .on('end', () => {
+            console.log(`File ${filename} processed`);
           });
-        });
       });
     });
   }
