@@ -1,0 +1,315 @@
+/* CSS Document */
+body {
+    font-family: 'Lato', sans-serif;
+    margin: 0px;
+	background-color: black;
+}
+#back {
+    background-color: #002E5D;
+    position: relative;
+    top: -8px;
+    left: 0px;
+    height: 600px;
+    width: 800px;
+    background-image: url("../images/usatf.jpg");
+    z-index: -1;
+}
+  
+#meetlogo {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    padding: 0px;
+    width: 120px;
+    height: 90px;
+    z-index: 3;
+}
+
+#wind {
+    background-color: #00dd00;
+    position: absolute;
+	font-family: 'Lato', sans-serif;
+	font-size: 52px;
+    left: 0px;
+    top: 0px;
+    line-height: 38px;
+	text-align: center;
+    width: 120px;
+    height: 90px;
+    z-index: 2;
+}
+
+#rowevent {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    top: 0px;
+    left: 120px;
+    width: 420px;
+    height: 70px;
+    padding: 10px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#5A5A5E 0%,
+		#424145 20%,
+		#1B1B1C 92%,
+		#090B0D);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#5A5A5E),
+		color-stop(0.15, #424145),
+		color-stop(0.92, #1B1B1C),
+		to(#090B0D));
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+    border-radius: 0px 0px 0px 0px;
+
+}
+
+#event {
+    font-family: 'Lato', sans-serif;
+    font-size: 32pt;
+    color: #eeeeee;
+    position: absolute;
+    text-align: left;
+    top: 0px;
+    left: 15px;
+    width: 630px;
+    height: 70px;
+}
+
+#eventinfo {
+    font-family: 'Lato', sans-serif;
+    font-size: 22pt;
+    color: #dddd00;
+    position: absolute;
+    text-align: left;
+    top: 46px;
+    left: 24px;
+    width: 400px;
+    height: 70px;
+}
+
+#rowtime {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    top: 0px;
+    left: 560px;
+    width: 220px;
+    height: 70px;
+    padding: 10px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#5A5A5E 0%,
+		#424145 20%,
+		#1B1B1C 92%,
+		#090B0D);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#5A5A5E),
+		color-stop(0.15, #424145),
+		color-stop(0.92, #1B1B1C),
+		to(#090B0D));
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+    border-radius: 0px 0px 0px 0px;
+}
+
+#time {
+    font-family: 'Lato', sans-serif;
+    font-size: 42pt;
+    color: #eeeeee;
+    position: absolute;
+    text-align: right;
+}
+
+#databody {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+    background-color: aquamarine;
+    z-index: -1;
+}
+
+#databody2 {
+    position: absolute;
+    top: 243px;
+    left: 0px;
+    margin: 0px;
+    background-color: aquamarine;
+    z-index: -1;
+}
+
+a {
+    font-family: 'Lato', sans-serif;
+	text-decoration: none;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    text-align: left;
+    padding-top: 0px;
+    left: 0px;
+    width: 380px;
+    height: 50px;
+}
+
+.rowbackground {
+    position: absolute;
+    left: 100px;
+    width: 680px;
+    height: 31px;
+    padding: 10px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#7790A6 0%,
+		#023059 20%,
+		#022859 92%,
+		#012340);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#7790A6),
+		color-stop(0.15, #023059),
+		color-stop(0.92, #022859),
+		to(#012340));
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px 0px 0px 0px;
+	border: 0px solid #012340;
+    
+}
+
+.rowplace {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    left: 0px;
+    width: 80px;
+    height: 31px;
+    padding: 10px 10px;
+	background: -moz-linear-gradient(
+		top,
+		#5A5A5E 0%,
+		#424145 20%,
+		#1B1B1C 92%,
+		#090B0D);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#5A5A5E),
+		color-stop(0.15, #424145),
+		color-stop(0.92, #1B1B1C),
+		to(#090B0D));
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+    border-radius: 6px 0px 0px 0px;
+	border: 0px solid #090B0D;
+
+}
+.lane {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #00eeee;
+    position: absolute;
+    padding-top: 5px;
+    left: 30px;
+    width: 60px;
+    height: 50px;
+    text-align: right;
+}
+.place {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    padding-top: 5px;
+    left: -14px;
+    width: 60px;
+    height: 50px;
+    text-align: right;
+}
+.logo {
+    font-family: 'Lato', sans-serif;
+    font-size: 24pt;
+    color: #eeeeee;
+    position: absolute;
+    padding-top: 2px;
+    left: 106px;
+    width: 50px;
+    height: 50px;
+}
+.name {
+    font-family: 'Lato', sans-serif;
+    font-size: 30pt;
+    color: #eeeeee;
+    position: absolute;
+    text-align: left;
+    padding-top: 4px;
+    left: 166px;
+    width: 380px;
+    height: 50px;
+}
+.abbr {
+    font-family: 'Lato', sans-serif;
+    font-size: 26pt;
+    color: #eeeeee;
+    position: absolute;
+    text-align: right;
+    padding-top: 4px;
+    left: 526px;
+    width: 120px;
+    height: 50px;
+}
+.mark {
+    font-family: 'Lato', sans-serif;
+    font-size: 26pt;
+    color: #eeeeee;
+    position: absolute;
+    padding-top: 8px;
+    text-align: right;
+    left: 662px;
+    width: 100px;
+    height: 50px;
+}
+
+#timeofday {
+    font-family: 'Lato', sans-serif;
+    font-size: 28pt;
+    color: #eeeeee;
+    position: absolute;
+    background-color: #002957;
+    text-align: left;
+    top: 554px;
+    left: 0px;
+    width: 800px;
+    height: 46px;
+    z-index: 1;
+}
+
+#temp {
+    font-family: 'Lato', sans-serif;
+    font-size: 28pt;
+    color: #eeeeee;
+    position: absolute;
+    background-color: #002957;
+    text-align: right;
+	top: 554px;
+	left: 200px;
+	width: 580px;
+    height: 46px;
+	z-index: 2;
+}
+
+#backgroundoverlay {
+    background-color: #002957;
+    position: absolute;
+    text-align: right;
+    top: 92px;
+    left: 0px;
+    width: 800px;
+    height: 508px;
+    visibility: hidden;
+}

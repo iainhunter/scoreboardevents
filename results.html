@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Scoreboard</title>
+    <link rel="stylesheet" type="text/css" href="css/scoreboard.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+</head>
+
+<body onload="temperature()">
+    <div id="back"></div>
+    
+    <div id="meetlogo"><img src="images/stretchysmall.jpg" alt=""></div>
+    <div id="wind"></div>
+    <div id="rowevent">
+        <div id="event"></div>
+        <div id="eventinfo"></div>
+    </div>
+    <div id="rowtime">
+        <div id="time"></div>
+    </div>
+    <div id="backgroundoverlay"></div>
+    
+    <div id="databody">
+    
+    <!--  Row 1  -->
+    <div style="top: 90px;" class="rowplace" id="rowplace01"></div>
+    <div style="top: 90px;" class="rowbackground" id="rowbackground01"></div>
+    <div style="top: 90px;" class="lane" id="lane01"></div>
+	<div style="top: 90px;" class="place" id="place01"></div>
+    <div style="top: 90px;" class="logo" id="logo01"></div>
+    <div style="top: 90px;" class="name" id="name01"></div>
+    <div style="top: 90px;" class="abbr" id="abbr01"></div>
+    <div style="top: 90px;" class="mark" id="mark01"></div>
+    
+    <!--  Row 2  -->
+    <div style="top: 141px;" class="rowplace" id="rowplace02"></div>
+    <div style="top: 141px;" class="rowbackground" id="rowbackground02"></div>
+	<div style="top: 141px;" class="lane" id="lane02"></div>
+    <div style="top: 141px;" class="place" id="place02"></div>
+    <div style="top: 141px;" class="logo" id="logo02"></div>
+    <div style="top: 141px;" class="name" id="name02"></div>
+    <div style="top: 141px;" class="abbr" id="abbr02"></div>
+    <div style="top: 141px;" class="mark" id="mark02"></div>
+    
+    <!--  Row 3  -->
+    <div style="top: 192px;" class="rowplace" id="rowplace03"></div>
+    <div style="top: 192px;" class="rowbackground" id="rowbackground03"></div>
+	<div style="top: 192px;" class="lane" id="lane03"></div>
+    <div style="top: 192px;" class="place" id="place03"></div>
+    <div style="top: 192px;" class="logo" id="logo03"></div>
+    <div style="top: 192px;" class="name" id="name03"></div>
+    <div style="top: 192px;" class="abbr" id="abbr03"></div>
+    <div style="top: 192px;" class="mark" id="mark03"></div>
+
+    <!--  Row 4  -->
+    <div style="top: 243px;" class="rowplace" id="rowplace04"></div>
+    <div style="top: 243px;" class="rowbackground" id="rowbackground04"></div>
+    <div style="top: 243px;" class="lane" id="lane04"></div>
+    <div style="top: 243px;" class="place" id="place04"></div>
+    <div style="top: 243px;" class="logo" id="logo04"></div>
+    <div style="top: 243px;" class="name" id="name04"></div>
+    <div style="top: 243px;" class="abbr" id="abbr04"></div>
+    <div style="top: 243px;" class="mark" id="mark04"></div>
+
+    <!--  Row 5  -->
+    <div style="top: 294px;" class="rowplace" id="rowplace05"></div>
+    <div style="top: 294px;" class="rowbackground" id="rowbackground05"></div>
+    <div style="top: 294px;" class="lane" id="lane05"></div>
+    <div style="top: 294px;" class="place" id="place05"></div>
+    <div style="top: 294px;" class="logo" id="logo05"></div>
+    <div style="top: 294px;" class="name" id="name05"></div>
+    <div style="top: 294px;" class="abbr" id="abbr05"></div>
+    <div style="top: 294px;" class="mark" id="mark05"></div>  
+        
+    
+    <!--  Row 6  -->
+    <div style="top: 345px;" class="rowplace" id="rowplace06"></div>
+    <div style="top: 345px;" class="rowbackground" id="rowbackground06"></div>
+    <div style="top: 345px;" class="lane" id="lane06"></div>
+    <div style="top: 345px;" class="place" id="place06"></div>
+    <div style="top: 345px;" class="logo" id="logo06"></div>
+    <div style="top: 345px;" class="name" id="name06"></div>
+    <div style="top: 345px;" class="abbr" id="abbr06"></div>
+    <div style="top: 345px;" class="mark" id="mark06"></div>
+    
+    <!--  Row 7  -->
+    <div style="top: 396px;" class="rowplace" id="rowplace07"></div>
+    <div style="top: 396px;" class="rowbackground" id="rowbackground07"></div>
+    <div style="top: 396px;" class="lane" id="lane07"></div>
+    <div style="top: 396px;" class="place" id="place07"></div>
+    <div style="top: 396px;" class="logo" id="logo07"></div>
+    <div style="top: 396px;" class="name" id="name07"></div>
+    <div style="top: 396px;" class="abbr" id="abbr07"></div>
+    <div style="top: 396px;" class="mark" id="mark07"></div>
+    
+    <!--  Row 8  -->
+    <div style="top: 447px;" class="rowplace" id="rowplace08"></div>
+    <div style="top: 447px;" class="rowbackground" id="rowbackground08"></div>
+    <div style="top: 447px;" class="lane" id="lane08"></div>
+	<div style="top: 447px;" class="place" id="place08"></div>
+    <div style="top: 447px;" class="logo" id="logo08"></div>
+    <div style="top: 447px;" class="name" id="name08"></div>
+    <div style="top: 447px;" class="abbr" id="abbr08"></div>
+    <div style="top: 447px;" class="mark" id="mark08"></div>
+    
+    <!--  Row 9  -->
+    <div style="top: 496px;" class="rowplace" id="rowplace09"></div>
+    <div style="top: 496px;" class="rowbackground" id="rowbackground09"></div>
+    <div style="top: 496px;" class="lane" id="lane09"></div>
+	<div style="top: 496px;" class="place" id="place09"></div>
+    <div style="top: 496px;" class="logo" id="logo09"></div>
+    <div style="top: 496px;" class="name" id="name09"></div>
+    <div style="top: 496px;" class="abbr" id="abbr09"></div>
+    <div style="top: 496px;" class="mark" id="mark09"></div>
+
+    </div>
+    
+    <div id="timeofday"></div>
+	<div id="temp"></div>
+    
+<input style="width: 80px; font-size: 18pt; opacity: 0;" type="number" id="numRows" value="9">
+    
+<script>
+        
+var scrollpos = 0;
+var myVar = setInterval(myTimer, 1000);
+var pageTimer;	
+var scrollTimer;
+var tempTimer = setInterval(temperature, 600000);
+var body = "";
+var numRows = 0;
+var numResults = 0;
+var pageNum = 1;
+var pageWait = -5;
+var numRunners = 0;
+	
+document.getElementById("databody").height = numRows * 31;
+    
+function myTimer() {
+    var d = new Date();
+    if (d.getHours()>11) {
+        var numHours = d.getHours();
+            var hours = numHours - 12;
+			if (hours==0) {hours=12;}
+            document.getElementById("timeofday").innerHTML = "&nbsp;" + hours + ":" + addZero(d.getMinutes()) + " PM";
+        }
+    else
+    {
+            document.getElementById("timeofday").innerHTML = "&nbsp;" + d.getHours() + ":" + addZero(d.getMinutes()) + " AM";
+    }
+}
+        
+    function updateBoard() {
+		console.log(Changed);
+		
+	}    
+	
+	//Get temperature
+	function temperature() {
+		  var key = '655390aedd24902570f09b43b149a211';
+		  fetch('https://api.openweathermap.org/data/2.5/weather?lat=40.2552&lon=-111.6561&appid=' + key)  
+		  .then(function(resp) { return resp.json() }) // Convert data to json
+		  .then(function(data) {
+		  var windspeed = Math.round(data.wind.speed *3600/1609.344*10)/10;
+		  var winddir = degtoord(data.wind.dir);
+		  document.getElementById('temp').innerHTML =  "Temp: " + Math.round((data.main.temp - 273.15) * 9/5 + 32) + "&deg;F"; // &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wind: " + windspeed + "mph " + winddir;
+			  
+  })
+		
+
+		
+  .catch(function() {
+    // catch any errors
+  });
+}
+	
+			
+function degtoord(deg) {
+  if (deg>11.25 && deg<33.75){
+    return "NNE";
+  }else if (deg>33.75 && deg<56.25){
+    return "ENE";
+  }else if (deg>56.25 && deg<78.75){
+    return "E";
+  }else if (deg>78.75 && deg<101.25){
+    return "ESE";
+  }else if (deg>101.25 && deg<123.75){
+    return "ESE";
+  }else if (deg>123.75 && deg<146.25){
+    return "SE";
+  }else if (deg>146.25 && deg<168.75){
+    return "SSE";
+  }else if (deg>168.75 && deg<191.25){
+    return "S";
+  }else if (deg>191.25 && deg<213.75){
+    return "SSW";
+  }else if (deg>213.75 && deg<236.25){
+    return "SW";
+  }else if (deg>236.25 && deg<258.75){
+    return "WSW";
+  }else if (deg>258.75 && deg<281.25){
+    return "W";
+  }else if (deg>281.25 && deg<303.75){
+    return "WNW";
+  }else if (deg>303.75 && deg<326.25){
+    return "NW";
+  }else if (deg>326.25 && deg<348.75){
+    return "NNW";
+  }else{
+    return "N"; 
+  }
+}
+	
+function scrollTimer() {
+	var pixellines = -51 * numResults;
+    if (document.getElementById("databody").style.top == pixellines + "px") {
+        scrollpos = 500;
+    }
+    console.log("databody.top: " + document.getElementById("databody").style.top);
+    scrollpos = scrollpos - 1;
+	document.getElementById("databody").style.top = scrollpos + "px";
+}  
+        
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+    
+function changeRows(changeAmount) {
+	for (i = 1; i < 10; i++) {
+		if (document.getElementById("numRows").value > i-1) {
+			var temp = parseInt(changeAmount);
+            if (i <= changeAmount) {
+                //fadeIn("rowbackground0" + i);
+				//fadeIn("name0" + i);
+				//fadeIn("abbr0" + i);
+				//fadeIn("logo0" + i);
+				//fadeIn("place0" + i);
+				//fadeIn("rowplace0" + i);
+   
+                document.getElementById("rowbackground0" + i).style.visibility="visible";
+                document.getElementById("name0" + i).style.visibility="visible";
+                document.getElementById("abbr0" + i).style.visibility="visible";
+                document.getElementById("logo0" + i).style.visibility="visible";
+                document.getElementById("lane0" + i).style.visibility="visible";
+                document.getElementById("place0" + i).style.visibility="visible";
+                document.getElementById("mark0" + i).style.visibility="visible";
+                document.getElementById("rowplace0" + i).style.visibility="visible";
+        }
+        else
+            {
+                document.getElementById("rowbackground0" + i).style.visibility="hidden";
+                document.getElementById("name0" + i).style.visibility="hidden";
+                document.getElementById("abbr0" + i).style.visibility="hidden";
+                document.getElementById("logo0" + i).style.visibility="hidden";
+                document.getElementById("lane0" + i).style.visibility="hidden";
+                document.getElementById("place0" + i).style.visibility="hidden";
+                document.getElementById("mark0" + i).style.visibility="hidden";
+                document.getElementById("rowplace0" + i).style.visibility="hidden";
+            }
+        }
+	}
+}
+
+function fadeIn(element) {	
+	var opac = 0;
+	document.getElementById(element).style.opacity = opac;
+	var opacVar = setInterval(fadeTimer, 10); 
+	function fadeTimer() {
+		opac = opac+0.001;
+		document.getElementById(element).style.opacity = opac
+		if (opac==1) {
+			clearTimeout(opacVar);
+		}
+	}
+}
+
+function fadeIn(element) {	
+	var opac = 0;
+	document.getElementById(element).style.opacity = opac;
+	var opacVar = setInterval(fadeTimer, 10); 
+	function fadeTimer() {
+		opac = opac+0.05;
+		document.getElementById(element).style.opacity = opac
+		if (opac==1) {
+			clearTimeout(opacVar);
+		}
+	}
+    }
+    function hideBackground() {
+        console.log(document.getElementById("btnHide").innerHTML);
+        if (document.getElementById("btnHide").innerHTML == "<h1>Show Background</h1>") {
+            document.getElementById("backgroundoverlay").style.visibility = "hidden";
+            document.getElementById("btnHide").innerHTML = "<h1>Hide Background</h1>";
+        }
+        else {
+            document.getElementById("backgroundoverlay").style.visibility = "visible";
+            document.getElementById("btnHide").innerHTML = "<h1>Show Background</h1>";
+        }
+    }
+
+    function initialize() {
+        var bodyConn = new WebSocket('ws://localhost:1515');
+		var dataChanged = false;
+		var startList = true;
+		temperature();
+		
+        // Act on Body messages from the server
+        bodyConn.onmessage = function (e) {
+			//Check if data changed
+            const newbody = JSON.parse(e.data);
+			var d = new Date();
+			console.log("Time of day: "  + d);
+			console.log(newbody);
+			if (body!==newbody) {
+				dataChanged = true;
+			}
+			body = newbody;
+			clearInterval(pageTimer);
+			dataChanged = false;
+			startList = true;
+			//Find number of runners
+			numRunners = body.results.length;
+			
+			//Check if results exist and count results
+			numResults = 0;
+			startList = true;
+			for (i = 0; i < numRunners; i++) {
+				if (body.results[i].mark != "") {
+					numResults = numResults + 1;
+					startList=false;
+				}
+			}
+			if (numRunners<10 && numResults>0) {
+				numRows = numResults;
+			}
+		
+            // Set title
+			var headerSubTitle = body.header.title;
+			var n = 0;
+			n = headerSubTitle.search("Section");
+			if (n < 1) {
+				n = headerSubTitle.search("Heat");
+			}
+			if (n < 1) {
+				n = headerSubTitle.search("Final");
+			}
+			if (n>0) {
+				headerTitle = headerSubTitle.substring(0,n);
+				headerSubTitle = headerSubTitle.substr(headerSubTitle.length - (headerSubTitle.length-n));
+				document.getElementById("event").innerHTML = headerTitle;
+				document.getElementById("eventinfo").innerHTML = headerSubTitle;
+			}
+			else
+			{
+				document.getElementById("event").innerHTML = body.header.title;
+				document.getElementById("eventinfo").innerHTML = "";
+			}
+			
+
+			// Add wind
+			if (isNaN(parseFloat(body.trailer.wind.substring(0, 4)))) {
+				document.getElementById("wind").style.zIndex = 2;
+				document.getElementById("meetlogo").style.zIndex = 3;
+			}
+			else
+			{
+				if (parseFloat(body.trailer.wind.substring(0, 4))<2) {
+				document.getElementById("wind").style.backgroundColor = "#dddd00";
+				}
+				else
+				{
+					document.getElementById("wind").style.backgroundColor = "#dddd00";
+				}
+				document.getElementById("meetlogo").style.zIndex = 2;
+				document.getElementById("wind").style.zIndex = 3;
+				var windtext = "<div style='font-size: 24pt'>wind<br></div>" + body.trailer.wind.substring(0, 4);
+				document.getElementById("wind").innerHTML = windtext;
+			}
+
+            var i;
+			
+			if (startList==true) {
+				if (numRunners<10) {
+				//Case for one page of results
+				clearInterval(pageTimer);
+				document.getElementById("databody").style.top = "0px";
+				changeRows(numRunners);
+				for (i = 0; i < numRunners; i++) {
+					document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+					document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+					if (body.results[i].place == "DNF") { body.results[i].place = "NF"; }
+					if (body.results[i].place == "DNS") { body.results[i].place = "NS"; }
+					document.getElementById("place0" + (i + 1)).innerHTML = new String(body.results[i].place);
+					document.getElementById("abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+					document.getElementById("mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+					var logotext = new String(body.results[i].team);
+					document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+				}
+				for (i = parseInt(numRunners+1); i < 9; i++) {
+					document.getElementById("name0" + (i)).innerHTML = "";
+					document.getElementById("abbr0" + (i)).innerHTML = "";
+					document.getElementById("mark0" + (i)).innerHTML = "";
+					document.getElementById("logo0" + (i)).innerHTML = "";
+				}
+			}
+			else
+			{
+				//Case for more than 1 page of results
+				pageTimer = setInterval(pageResults, 400);
+				pageResults();
+			}
+			}
+			else
+				{
+					if (numRunners<10) {
+				//Case for one page of results
+				clearInterval(pageTimer);
+				document.getElementById("databody").style.top = "0px";
+				//changeRows(numResults);
+				for (i = 0; i < numRunners; i++) {
+					document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+					document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+					if (body.results[i].place == "DNF") { body.results[i].place = "NF"; }
+					if (body.results[i].place == "DNS") { body.results[i].place = "NS"; }
+					console.log("Place (" + i + "): " + body.results[i].place);
+					console.log("Num Runners: ") + numRunners;
+					document.getElementById("place0" + (i + 1)).innerHTML = new String(body.results[i].place);
+					document.getElementById("abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+					document.getElementById("mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+					var logotext = new String(body.results[i].team);
+					document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+				}
+				for (i = parseInt(numRunners+1); i < 9; i++) {
+					document.getElementById("name0" + (i)).innerHTML = "";
+					document.getElementById("abbr0" + (i)).innerHTML = "";
+					document.getElementById("mark0" + (i)).innerHTML = "";
+					document.getElementById("logo0" + (i)).innerHTML = "";
+				}
+			}
+			else
+			{
+				//Case for more than 1 page of results
+				pageTimer = setInterval(pageResults, 400);
+				pageResults();
+			}
+				}
+			
+		}
+		
+		function pageResults() {
+			if (startList==true) {
+			//Calculate number of pages for startlists
+			var numPages = Math.floor((numRunners-1)/9)+1;
+			var row = 0;
+			var displayNum=0;
+			if (numRunners-9*(pageNum-1)>8) {
+				displayNum = 9;
+			}
+			else
+			{
+				displayNum = (numRunners-9*(pageNum-1));
+			}
+			changeRows(displayNum);
+			for (i = 0; i < displayNum; i++) {
+				row=row+1;
+				document.getElementById("name0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].name);
+				document.getElementById("lane0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].lane);
+				if (isNaN(parseInt(body.results[i].place))) {document.getElementById("place0" + row).innerHTML = "";}
+				else {document.getElementById("place0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].place);}
+				document.getElementById("abbr0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].team);
+				document.getElementById("mark0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].mark);
+				var logotext = new String(body.results[(pageNum-1)*9 + i].team);
+				document.getElementById("logo0" + row).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+				var milliseconds = displayNum * 1000;
+			}
+
+			if (numPages>pageNum)
+			{
+				pageWait = pageWait + 1;
+				if (pageWait > displayNum) {
+					pageNum = pageNum+ + 1;
+					pageWait = -5;
+				}
+			}
+			else
+			{
+				
+				pageWait = pageWait + 1;
+				if (pageWait > displayNum) {
+					pageNum=1;
+					pageWait = -5;
+				}
+			}
+			}
+			else
+				{
+			//Calculate number of pages for results
+			var numPages = Math.floor((numResults-1)/9)+1;
+			var row = 0;
+			var displayNum
+			if (numResults-9*(pageNum-1)>8) {
+				displayNum = 9;
+			}
+			else
+			{
+				displayNum = (numResults-9*(pageNum-1));
+			}
+			changeRows(displayNum);
+			for (i = 0; i < displayNum; i++) {
+				row=row+1;
+				document.getElementById("name0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].name);
+				document.getElementById("lane0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].lane);
+				if (isNaN(parseInt(body.results[i].place))) {document.getElementById("place0" + row).innerHTML = "";}
+				else {document.getElementById("place0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].place);}
+				document.getElementById("abbr0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].team);
+				document.getElementById("mark0" + row).innerHTML = new String(body.results[(pageNum-1)*9 + i].mark);
+				var logotext = new String(body.results[(pageNum-1)*9 + i].team);
+				document.getElementById("logo0" + row).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+				var milliseconds = displayNum * 1000;
+			}
+
+			if (numPages>pageNum)
+			{
+				pageWait = pageWait + 1;
+				if (pageWait > displayNum) {
+					pageNum = pageNum+ + 1;
+					pageWait = -5;
+				}
+			}
+			else
+			{
+				
+				pageWait = pageWait + 1;
+				if (pageWait > displayNum) {
+					pageNum=1;
+					pageWait = -5;
+				}
+			}
+				}
+		}
+		
+
+	
+
+        bodyConn.onopen = function () {
+            console.log('Connected to Body');
+            bodyConn.send('Ping'); // Send the message 'Ping' to the server
+        };
+
+        // Log errors
+        bodyConn.onerror = function (error) {
+            console.log('WebSocket Error ' + error);
+        };
+		
+		//Check if any changes arrived
+		if (dataChanged==true) {
+			updateBoard();
+		}
+    }
+	
+
+    window.onload = initialize;
+</script>
+</body>
+
+</html>
