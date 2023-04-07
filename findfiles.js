@@ -1,49 +1,28 @@
 const fs = require('fs');
-const path = require('path');
+const WebSocket = require('ws');
 
-// Define the directory to watch
-const directoryPath = '/Users/ih-admin/Documents/biomech/scoreboards/Running Events';
+const wss = new WebSocket.Server({ port: 1515 });
 
-// Watch the directory for changes
-fs.watch(directoryPath, (eventType, filename) => {
-  // If a new file is added to the directory
-  if (eventType === 'rename' && filename) {
-    // Get the full path of the new file
-    const filePath = path.join(directoryPath, filename);
+const folderPath = '/Users/ih-admin/Documents/biomech/scoreboards/Running Events'; // replace this with the path to the folder you want to watch
 
-    // Read the contents of the new file
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(`Error reading file: ${err}`);
-      } else {
-        console.log(`New file ${filename} arrived with contents: ${data}`);
-        const extension = path.extname(filename);
-        console.log('Extension: ' + extension);
-        if (extension=='.lif') {
-          const WebSocket = require('ws');
-
-          // Create a WebSocket client
-          const ws = new WebSocket('ws://localhost:1515');
-
-          // When the WebSocket connection is opened, send data
-          ws.on('open', function() {
-            const data = {
-              message: 'Hello, WebSocket!'
-            };
-            ws.send(JSON.stringify(data));
+fs.watchFile(folderPath, (curr, prev) => {
+  if (curr.mtimeMs !== prev.mtimeMs) {
+    console.log("New file");
+    fs.readdir(folderPath, (err, files) => {
+      if (err) throw err;
+      files.forEach((filename) => {
+        const filePath = `${folderPath}/${filename}`;
+        fs.readFile(filePath, (err, data) => {
+          if (err) throw err;
+          wss.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+              client.send(data);
+            }
           });
-
-          // Log any errors that occur
-          ws.on('error', function(error) {
-            console.error(error);
-          });
-
-          // When the WebSocket connection is closed, log a message
-          ws.on('close', function() {
-            console.log('WebSocket connection closed');
-          });
-        }
-      }
+        });
+      });
     });
   }
 });
+
+console.log(`Watching folder ${folderPath} for changes...`);

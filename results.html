@@ -303,17 +303,17 @@ function fadeIn(element) {
     }
 
     function initialize() {
-        var bodyConn = new WebSocket('ws://localhost:1515');
 		var dataChanged = false;
 		var startList = true;
-		temperature();
-		
+
+        var bodyConn = new WebSocket('ws://localhost:1515');
+
         // Act on Body messages from the server
         bodyConn.onmessage = function (e) {
 			//Check if data changed
+			console.log("Message arrived");
             const newbody = JSON.parse(e.data);
-			var d = new Date();
-			console.log("Time of day: "  + d);
+			
 			console.log(newbody);
 			if (body!==newbody) {
 				dataChanged = true;
