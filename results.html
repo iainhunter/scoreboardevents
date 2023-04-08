@@ -313,11 +313,9 @@ function fadeIn(element) {
 			//Check if data changed
 			console.log("Message arrived");
             const newbody = JSON.parse(e.data);
-
-
-  // Do something with the binary data here
-
-
+			const keys = Object.keys(newbody);
+			const numProperties = keys.length;
+			console.log("NumAthletes: " + keys.length);
 
 			console.log(newbody);
 			if (body!==newbody) {
@@ -328,7 +326,7 @@ function fadeIn(element) {
 			dataChanged = false;
 			startList = true;
 			//Find number of results
-			numAthletes = body.results.length;
+			numAthletes = keys.length;
 			
 			//Check if results exist and count results
 			numResults = 0;

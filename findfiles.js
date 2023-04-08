@@ -8,17 +8,17 @@ const folderPath = '/Users/ih-admin/Documents/biomech/scoreboards/Running Events
 
 fs.watchFile(folderPath, (curr, prev) => {
   if (curr.mtimeMs !== prev.mtimeMs) {
-    console.log("New file");
     fs.readdir(folderPath, (err, files) => {
       if (err) throw err;
       files.forEach((filename) => {
         const filePath = `${folderPath}/${filename}`;
         fs.createReadStream(filePath)
-          .pipe(csv())
+          .pipe(csv({ headers: false })) // Pass headers: false to treat first row as data
           .on('data', (row) => {
             wss.clients.forEach((client) => {
               if (client.readyState === WebSocket.OPEN) {
                 client.send(JSON.stringify(row));
+                console.log(JSON.stringify(row));
               }
             });
           })
@@ -31,3 +31,4 @@ fs.watchFile(folderPath, (curr, prev) => {
 });
 
 console.log(`Watching folder ${folderPath} for changes...`);
+

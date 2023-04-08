@@ -1,13 +1,4 @@
 {
-  "name": "scoreboards",
-  "version": "1.0.0",
-  "description": "Export scoreboards for each event",
-  "main": "findfiles.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "csv-parser": "^3.0.0",
     "ws": "^8.13.0"
