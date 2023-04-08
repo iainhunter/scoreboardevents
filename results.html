@@ -306,16 +306,14 @@ function fadeIn(element) {
 		var dataChanged = false;
 		var startList = true;
 
-        var bodyConn = new WebSocket('ws://localhost:1515');
+        var bodyConn = new WebSocket('ws://localhost:1516');
 
         // Act on Body messages from the server
         bodyConn.onmessage = function (e) {
 			//Check if data changed
-			console.log("Message arrived");
             const newbody = JSON.parse(e.data);
 			const keys = Object.keys(newbody);
 			const numProperties = keys.length;
-			console.log("NumAthletes: " + keys.length);
 
 			console.log(newbody);
 			if (body!==newbody) {
