@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Page</title>
+</head>
+<body>
+
+  <div id="searchResults"></div>
+
+  <script>
+    const socket = new WebSocket("ws://localhost:3000");
+    var searchTerm = '';
+
+    socket.addEventListener("open", function(event) {
+      console.log("Connected to server");
+      searchTerm = new URL(window.location.href).searchParams.get("searchTerm");
+      searchFiles();
+    });
+  
+    socket.addEventListener("message", function(event) {
+        const results = JSON.parse(event.data);
+        console.log(results);
+        let output = "";
+        for (const line of results) {
+            output += line.place + ", " + line.name + ", " + line.team + " " + line.result + "</br>";
+        }
+
+        document.getElementById("searchResults").innerHTML = output;
+    });
+  
+    socket.addEventListener("error", function(event) {
+      console.error("WebSocket error:", event);
+      alert("An error occurred while trying to search for files. Please try again later.");
+    });
+  
+    function searchFiles() {
+      console.log("search term: " + searchTerm);
+      if (socket.readyState === WebSocket.OPEN) {
+        socket.send(searchTerm); // Send only the search term to the server
+      } else {
+        console.log("WebSocket is not open yet. Waiting...");
+        setTimeout(searchFiles, 100); // Wait 100ms and try again
+      }
+    }
+  </script>
+</body>
+</html>
