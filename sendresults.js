@@ -172,7 +172,6 @@ async function horizontalJumpScoredList(fileList) {
         let row = {title: "Girl's Long Jump", place: place, lane: 1, name: resultarray[i].name, team: resultarray[i].team, mark: resultarray[i].result[0]};
         resultwithplace.push(row);
     }
-    console.log(resultwithplace);
     return resultwithplace;
     
 
@@ -182,14 +181,14 @@ async function horizontalJumpScoredList(fileList) {
 // Takes in an array of lif files and returns the results in an object.
 async function getResults(fileList, eventName) {
 
-  eventName = "longjump";
+  eventName = "highjump";
     let res;
     switch(eventName) {
         case 'longjump':
             res = await horizontalJumpScoredList(fileList);
             break;
         case 'highjump':
-            res = await horizontalJumpScoredList(fileList);
+            res = await scoreVertical(fileList);
             break;
         default:
             console.log('Event Type hit default.');
@@ -220,7 +219,12 @@ wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', async (message) => {
-    message="019-1";
+    message = message.toString()
+
+
+    console.log(typeof message); 
+    console.log("Message: " + message);
+    message = "020-1";
 
     createEventNames(message);
 
@@ -255,3 +259,185 @@ wss.on('connection', (ws) => {
     console.log('Client disconnected');
   });
 });
+
+
+
+
+async function scoreVertical(fileList) {
+  console.log('Vertical Jump Score:');
+  console.log(fileList);
+
+  const results = await readlff(fileList);
+  var data = parselines(results);
+
+  const rows = data.split("\n");
+const header = rows[0].split(",");
+const heights = header.slice(6, -1);
+let Misses = [];
+
+// Loop over each row starting at index 1 to skip the header row
+for (let i = 1; i < rows.length; i++) {
+  const rowValues = rows[i].split(',');
+  let xCount = 0;
+  
+  // Loop over each value starting at index 7 to count "X"s individually
+  for (let j = 7; j < rowValues.length; j++) {
+    for (let k = 0; k < rowValues[j].length; k++) {
+      if (rowValues[j][k] === 'X') {
+        xCount++;
+      }
+    }
+  }
+  Misses[i] = xCount;
+}
+
+const result = {
+  name: header[3],
+  metric: header[4],
+  heights: {}
+};
+
+for (let i = 1; i < rows.length; i++) {
+  const cols = rows[i].split(",");
+  const name = cols[5] + " " + cols[4];
+  const team = cols[6];
+  const attempts = cols.slice(6, -1);
+  let missesOnPrevHeight = undefined;
+  let clearanceOnPrevHeight = undefined;
+  let bestClearance = undefined;
+  let bestHeight = undefined;
+  
+  for (let j = heights.length - 1; j >= 0; j--) {
+    const height = heights[j];
+    if (attempts[j] !== undefined) {
+      const clearance = attempts[j];
+      const totalMisses = Misses[i];
+      if (clearance == "XXO") {
+        missesOnPrevHeight = 2;
+      } else if (clearance == "XO") {
+        missesOnPrevHeight = 1;
+      } else if (clearance == "O") {
+        missesOnPrevHeight = 0;
+        if (bestHeight === undefined || height > bestHeight) {
+          bestHeight = height;
+        }
+      } else {
+        missesOnPrevHeight = -1;
+      }
+      if (bestClearance === undefined || clearance === "O") {
+        bestClearance = clearance;
+      }
+      result.heights[height] = result.heights[height] || [];
+      result.heights[height].push({
+        name,
+        team,
+        clearance,
+        totalMisses,
+        missesOnPrevHeight
+      });
+      clearanceOnPrevHeight = clearance;
+      break; // break out of the loop once the clearance for the current height is added
+    }
+  }   
+}
+
+// sort the heights in ascending order
+const sortedHeights = Object.keys(result.heights).sort();
+
+// create a new object with sorted data
+const sortedResult = {
+  name: result.name,
+  metric: result.metric,
+  heights: {}
+};
+
+sortedHeights.forEach((height) => {
+  sortedResult.heights[height] = result.heights[height].map((obj) => {
+    return {
+      name: obj.name,
+      team: obj.team,
+      lastclearance: obj.clearance,
+      totalMisses: obj.totalMisses,
+      missesOnPrevHeight: obj.missesOnPrevHeight,
+      bestHeight: height
+    };
+  });
+});
+
+  sortedHeights.forEach((height) => {
+    sortedResult.heights[height].forEach((athlete) => {
+      if (height == heights[0]) {athlete.bestHeight = "NH"}
+else
+{
+    for (let i = 1; i<heights.length; i++) {
+        if (height == heights[i]) {athlete.bestHeight = heights[i-1];}
+    }
+    }
+});
+  });
+
+  const sortedDataArray = Object.values(sortedResult.heights).flat();
+
+  function compare(a, b) {
+    // First, compare the numeric value of bestHeight
+    let aHeight = parseFloat(a.bestHeight);
+    let bHeight = parseFloat(b.bestHeight);
+  
+    if (aHeight > bHeight) {
+      return -1;
+    }
+    if (bHeight > aHeight) {
+      return 1;
+    }
+  
+    // If bestHeight is equal, move entries with letters to the bottom
+    if (isNaN(aHeight)) {
+      return 1;
+    }
+    if (isNaN(bHeight)) {
+      return -1;
+    }
+  
+    // If both have a numeric bestHeight or both have a non-numeric bestHeight, do not change order
+    return 0;
+  }
+  
+  sortedDataArray.sort(compare);
+
+// Sort the data array
+sortedDataArray.sort((a, b) => {
+  // Sort by bestHeight first
+  if (a.bestHeight !== b.bestHeight) {
+    return b.bestHeight - a.bestHeight;
+  }
+  // Sort by missesOnPrevHeight second
+  if (a.missesOnPrevHeight !== b.missesOnPrevHeight) {
+    return a.missesOnPrevHeight - b.missesOnPrevHeight;
+  }
+  // Sort by totalMisses last
+  return a.totalMisses - b.totalMisses;
+});
+
+// Assign the places to each athlete
+let currentPlace = 1;
+let previousAthlete = null;
+
+for (let i = 0; i < sortedDataArray.length; i++) {
+  const athlete = sortedDataArray[i];
+  let n=0;
+  if (previousAthlete !== null && 
+      athlete.bestHeight === previousAthlete.bestHeight &&
+      athlete.missesOnPrevHeight === previousAthlete.missesOnPrevHeight &&
+      athlete.totalMisses === previousAthlete.totalMisses) {
+    athlete.place = previousAthlete.place;
+    n=n+1;
+  } else {
+    athlete.place = currentPlace;
+    currentPlace++;
+  }
+  currentPlace = currentPlace + n;
+  previousAthlete = athlete;
+}
+return sortedDataArray;
+
+}
