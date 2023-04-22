@@ -5,6 +5,9 @@
 <title>Scoreboard</title>
     <link rel="stylesheet" type="text/css" href="css/scoreboard.css">
     <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+	<script type="module" src="findfiles.js"></script>
+	<script type="module" src="sendresults.js"></script>
+
 </head>
 
 <body onload="temperature()">
@@ -122,10 +125,10 @@
 <input style="width: 80px; font-size: 18pt; opacity: 0;" type="number" id="numRows" value="9">
     
 <script>
-        
+import { myFunction } from "./sendresults.js";        
 var scrollpos = 0;
 var myVar = setInterval(myTimer, 1000);
-var pageTimer;	
+var pageTimer;
 var scrollTimer;
 var tempTimer = setInterval(temperature, 600000);
 var body = "";
@@ -307,6 +310,36 @@ function fadeIn(element) {
 		var startList = true;
 
         var bodyConn = new WebSocket('ws://localhost:1516');
+		var filenameConn = new WebSocket('ws://localhost:1515');
+		var eventList = new Object();
+
+		// Call the function
+		getFiles();
+		const filenames = JSON.parse(e.data);
+			console.log(filenames.event);
+
+			let firstpart = filenames.eventnum;
+			if (firstpart.length == 1) {firstpart = "00" + firstpart;}
+			if (firstpart.length == 2) {firstpart = "0" + firstpart;}
+			let thirdpart = filenames.heat;
+			if (thirdpart.length == 1) {thirdpart = "0" + thirdpart;}
+			console.log("Lif file: " + firstpart + "-" + filenames.round + "-" + thirdpart + ".lif");
+			eventList.name = filenames.event;
+			eventList.id = filenames.eventnum;
+
+		filenameConn.onmessage = function (e) {
+			const filenames = JSON.parse(e.data);
+			console.log(filenames.event);
+
+			let firstpart = filenames.eventnum;
+			if (firstpart.length == 1) {firstpart = "00" + firstpart;}
+			if (firstpart.length == 2) {firstpart = "0" + firstpart;}
+			let thirdpart = filenames.heat;
+			if (thirdpart.length == 1) {thirdpart = "0" + thirdpart;}
+			console.log("Lif file: " + firstpart + "-" + filenames.round + "-" + thirdpart + ".lif");
+			eventList.name = filenames.event;
+			eventList.id = filenames.eventnum;
+		}
 
         // Act on Body messages from the server
         bodyConn.onmessage = function (e) {
@@ -545,7 +578,10 @@ function fadeIn(element) {
 		}
 		
 
-	
+		filenameConn.onopen = function () {
+            console.log('Connected to File Finder');
+            bodyConn.send('Ping'); // Send the message 'Ping' to the server
+        };
 
         bodyConn.onopen = function () {
             console.log('Connected to Body');

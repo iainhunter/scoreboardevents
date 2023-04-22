@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Page</title>
+</head>
+<body>
+  <h1>Search for Files</h1>
+  <form>
+    <label for="searchTerm">Enter a search term:</label>
+    <input type="text" id="searchTerm" name="searchTerm">
+    <input type="button" value="Search" onclick="searchFiles()">
+  </form>
+  <div id="searchResults"></div>
+
+  <script>
+    const socket = new WebSocket("ws://localhost:3000");
+  
+    socket.addEventListener("open", function(event) {
+      console.log("Connected to server");
+    });
+  
+    socket.addEventListener("message", function(event) {
+      const results = JSON.parse(event.data);
+      let output = "<ul>";
+      for (const filename of results) {
+        output += "<li>" + filename + "</li>";
+      }
+      output += "</ul>";
+      document.getElementById("searchResults").innerHTML = output;
+      console.log(output);
+    });
+  
+    socket.addEventListener("error", function(event) {
+      console.error("WebSocket error:", event);
+      alert("An error occurred while trying to search for files. Please try again later.");
+    });
+  
+    function searchFiles() {
+      const searchTerm = document.getElementById("searchTerm").value;
+      console.log("search term: " + searchTerm);
+      socket.send(searchTerm); // Send only the search term to the server
+    }
+  </script>
+  
+  
+</body>
+</html>
