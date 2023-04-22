@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Scoreboard</title>
+    <link rel="stylesheet" type="text/css" href="css/scoreboardscroll.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+</head>
+
+<body onload="temperature()">
+    <div id="back"></div>
+    
+    
+    <div id="meetlogo"><img src="images/stretchysmall.jpg" alt=""></div>
+    <div id="wind"></div>
+    <div id="rowevent">
+        <div id="event"></div>
+        <div id="eventinfo"></div>
+    </div>
+    <div id="rowtime">
+        <div id="time"></div>
+    </div>
+    <div id="backgroundoverlay"></div>
+    
+	<div id="databody1">
+    	<div id="content1"></div>
+    </div>
+    
+	<div id="databody2">
+    	<div id="content2"></div>
+    </div>
+	
+	<div id="top3">
+		<div id="back1" class="shadeback"></div>
+    	<div id="back2" class="shadeback"></div>
+    	<div id="back3" class="shadeback"></div>
+    	<div id="content3"></div>
+    </div>
+	
+    <div id="timeofday"></div>
+	<div id="temp"></div>
+	
+<div id="bottom">
+<input style="width: 80px; font-size: 18pt; opacity: 0;" type="number" id="numRows" value="9">
+	</div>
+    
+<script>
+        
+var scrollpos1 = "90px";
+var scrollpos2 = "90px";
+var myVar = setInterval(myTimer, 1000);
+var pageTimer;
+var body = [];
+var numRows = 0;
+var numResults = 0;
+var pageNum = 1;
+var pageWait = -5;
+var numRunners = 0;
+var scrolling = false;
+var whichontop = 1;
+var startList = true;
+	
+document.getElementById("databody1").style.top = "90px";
+document.getElementById("databody2").style.top = "600px";
+document.getElementById("top3").style.top = "90px";
+document.getElementById('back1').style.top = "0px";
+document.getElementById('back2').style.top = "51px";
+document.getElementById('back3').style.top = "102px";
+	
+	
+function myTimer() {
+    var d = new Date();
+    if (d.getHours()>11) {
+        var numHours = d.getHours();
+            var hours = numHours - 12;
+			if (hours==0) {hours=12;}
+            document.getElementById("timeofday").innerHTML = "&nbsp;" + hours + ":" + addZero(d.getMinutes()) + " PM";
+        }
+    else
+    {
+            document.getElementById("timeofday").innerHTML = "&nbsp;" + d.getHours() + ":" + addZero(d.getMinutes()) + " AM";
+    }
+}
+        
+    function updateBoard() {
+		console.log(Changed);
+		
+	}    
+
+			
+function degtoord(deg) {
+  if (deg>11.25 && deg<33.75){
+    return "NNE";
+  }else if (deg>33.75 && deg<56.25){
+    return "ENE";
+  }else if (deg>56.25 && deg<78.75){
+    return "E";
+  }else if (deg>78.75 && deg<101.25){
+    return "ESE";
+  }else if (deg>101.25 && deg<123.75){
+    return "ESE";
+  }else if (deg>123.75 && deg<146.25){
+    return "SE";
+  }else if (deg>146.25 && deg<168.75){
+    return "SSE";
+  }else if (deg>168.75 && deg<191.25){
+    return "S";
+  }else if (deg>191.25 && deg<213.75){
+    return "SSW";
+  }else if (deg>213.75 && deg<236.25){
+    return "SW";
+  }else if (deg>236.25 && deg<258.75){
+    return "WSW";
+  }else if (deg>258.75 && deg<281.25){
+    return "W";
+  }else if (deg>281.25 && deg<303.75){
+    return "WNW";
+  }else if (deg>303.75 && deg<326.25){
+    return "NW";
+  }else if (deg>326.25 && deg<348.75){
+    return "NNW";
+  }else{
+    return "N"; 
+  }
+}
+	
+	function fillContents(n) {
+		var output1 = "";
+		var adjustment = 0;
+		if (startList == true) {adjustment = 3;}
+		//Set background of top 3
+		if (startList == false && numResults >=3) {
+			document.getElementById('back1').style.visibility="visible";
+			document.getElementById('back2').style.visibility="visible";
+			document.getElementById('back3').style.visibility="visible";
+		}
+		else
+		{
+			document.getElementById('back1').style.visibility="hidden";
+			document.getElementById('back2').style.visibility="hidden";
+			document.getElementById('back3').style.visibility="hidden";
+		}
+		if (startList == false && numResults ==2) {
+			document.getElementById('back1').style.visibility="visible";
+			document.getElementById('back2').style.visibility="visible";
+		}
+		if (startList == false && numResults ==1) {
+			document.getElementById('back1').style.visibility="visible";
+		}
+
+		if (startList==false && numRunners<10) {
+			document.getElementById('back1').style.visibility="hidden";
+			document.getElementById('back2').style.visibility="hidden";
+			document.getElementById('back3').style.visibility="hidden";
+		}
+		for (i=4 - adjustment; i<n+1; i++) {
+			output1 = output1.concat("<!--  Row " + i + "  -->");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='rowplace' id='rowplace0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='rowbackground' id='rowbackground0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='lane' id='lane0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='place' id='place0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='logo' id='logo0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='name' id='name0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='abbr' id='abbr0" + i + "'></div>");
+			output1 = output1.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='mark' id='mark0" + i + "'></div>");
+		}
+		document.getElementById('content1').innerHTML = output1;
+		
+		var output2 = "";
+		for (i=4 - adjustment; i<n+1; i++) {
+			output2 = output2.concat("<!--  Row " + i + "  -->");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='rowplace' id='2rowplace0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='rowbackground' id='2rowbackground0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='lane' id='2lane0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='place' id='2place0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='logo' id='2logo0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='name' id='2name0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='abbr' id='2abbr0" + i + "'></div>");
+			output2 = output2.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='mark' id='2mark0" + i + "'></div>");
+		}
+		document.getElementById('content2').innerHTML = output2;
+		
+		if (startList != true) {
+		var output3 = "";
+		var countTo = 4;
+		if (numResults<countTo) {countTo = numResults + 1;}
+			output2 = "";
+			output1 = "";
+			document.getElementById('content3').style.visibility = "visible";
+			for (i=1; i<countTo; i++) {
+				classname = "rowbackground";
+				if (numRunners>9  ) {
+					if (i==1) { classname = "rowbackgroundtext"; } 
+					else if (i==2) { classname = "rowbackgroundtext"; } 
+					else if (i==3) { classname = "rowbackgroundtext"; } 
+					else { classname = "rowbackground"; }
+				}
+				output3 = output3.concat("<!--  Row " + i + "  -->");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='rowplace' id='3rowplace0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='" + classname + "' id='3rowbackground0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='lane' id='3lane0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='place' id='3place0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='logo' id='3logo0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='name' id='3name0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='abbr' id='3abbr0" + i + "'></div>");
+				output3 = output3.concat("<div style='top: " + (i-1)*51 +  "px; position: absolute;' class='mark' id='3mark0" + i + "'></div>");
+			}
+			document.getElementById('content3').innerHTML = output3;
+		}
+		else
+			{document.getElementById('content3').style.visibility = "hidden";}
+		addData(n);
+	}
+	
+function addData(n) {
+	
+	if (startList != true) {		
+		for (i = 0; i < 3; i++) {
+			//Top3
+			document.getElementById("3name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+			document.getElementById("3lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+			if (isNaN(parseInt(body.results[i].place))) {document.getElementById("3place0" + (i + 1)).innerHTML = "";}
+			else {document.getElementById("3place0" + (i + 1)).innerHTML = new String(body.results[i].place);}
+			//if (body.results[i].place ==1) {document.getElementById("3place0" + (i + 1)).innerHTML = "<img src='images/gold.png'>";}
+			//if (body.results[i].place ==2) {document.getElementById("3place0" + (i + 1)).innerHTML = "<img src='images/silver.png'>";}
+			//if (body.results[i].place ==3) {document.getElementById("3place0" + (i + 1)).innerHTML = "<img src='images/bronze.png'>";}
+			document.getElementById("3abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+			document.getElementById("3mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+			var logotext = new String(body.results[i].team);
+			document.getElementById("3logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+		}
+
+		for (i = 3; i < n; i++) {
+			//Databody1
+			document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+			document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+			if (isNaN(parseInt(body.results[i].place))) {document.getElementById("place0" + (i + 1)).innerHTML = "";}
+			else {document.getElementById("place0" + (i + 1)).innerHTML = new String(body.results[i].place);}
+			document.getElementById("abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+			document.getElementById("mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+			var logotext = new String(body.results[i].team);
+			document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+			//Databody2
+			document.getElementById("2name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+			document.getElementById("2lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+			if (isNaN(parseInt(body.results[i].place))) {document.getElementById("2place0" + (i + 1)).innerHTML = "";}
+			else {document.getElementById("2place0" + (i + 1)).innerHTML = new String(body.results[i].place);}
+			document.getElementById("2abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+			document.getElementById("2mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+			var logotext = new String(body.results[i].team);
+			document.getElementById("2logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+		}
+	}
+	else
+	{
+		for (i = 0; i < n; i++) {
+			//Databody1
+			document.getElementById("name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+			document.getElementById("lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+			if (isNaN(parseInt(body.results[i].place))) {document.getElementById("place0" + (i + 1)).innerHTML = "";}
+			else {document.getElementById("place0" + (i + 1)).innerHTML = new String(body.results[i].place);}
+			document.getElementById("abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+			document.getElementById("mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+			var logotext = new String(body.results[i].team);
+			document.getElementById("logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+			//Databody2
+			document.getElementById("2name0" + (i + 1)).innerHTML = new String(body.results[i].name);
+			document.getElementById("2lane0" + (i + 1)).innerHTML = new String(body.results[i].lane);
+			if (isNaN(parseInt(body.results[i].place))) {document.getElementById("2place0" + (i + 1)).innerHTML = "";}
+			else {document.getElementById("2place0" + (i + 1)).innerHTML = new String(body.results[i].place);}
+			document.getElementById("2abbr0" + (i + 1)).innerHTML = new String(body.results[i].team);
+			document.getElementById("2mark0" + (i + 1)).innerHTML = new String(body.results[i].mark);
+			var logotext = new String(body.results[i].team);
+			document.getElementById("2logo0" + (i + 1)).innerHTML = "<img src='flags/" + logotext + ".png' onerror=\"javascript:this.src='flags/blank.png'\"/>";
+		}
+	}
+}
+	
+function scrollTimer(n) {
+	if (startList == false) {n=n-3;}
+	
+	var highPoint = -((n-1)*51);
+	//databody1
+	var temp = document.getElementById("databody1").style.top;
+	scrollpos1 = parseInt(temp.slice(0,-2));
+    if (document.getElementById("databody1").style.top == highPoint + "px") { 
+		scrollpos1 = scrollpos2 + (n+1)*51; 
+		whichontop = 2;
+	}
+    if (whichontop == 1) {
+		scrollpos1 = scrollpos1 - 1;
+	}
+	else
+		{
+			scrollpos1 = scrollpos2 + (n+1)*51;
+		}
+	document.getElementById("databody1").style.top = scrollpos1 + "px";
+	
+	//databody2
+	temp = document.getElementById("databody2").style.top;
+	scrollpos2 = parseInt(temp.slice(0,-2));
+    if (document.getElementById("databody2").style.top == highPoint + "px") { 
+		scrollpos2 = scrollpos1 + (n+1)*51; 
+		whichontop = 1;
+	}
+	if (whichontop == 2) {
+		scrollpos2 = scrollpos2 -1;
+		}
+	else{
+		scrollpos2 = scrollpos1 + (n+1)*51;
+	}
+	document.getElementById("databody2").style.top = scrollpos2 + "px";
+}  
+	
+
+	
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+    function initialize() {
+        var bodyConn = new WebSocket("ws://localhost:3000");
+		var dataChanged = false;
+		startList = true;
+		
+        // Act on Body messages from the server
+        bodyConn.onmessage = function (e) {
+			//Check if data changed
+            const newbody = JSON.parse(e.data);
+			if (body!==newbody) {
+				dataChanged = true;
+			}
+			body.results = newbody;
+			clearInterval(pageTimer);
+			dataChanged = false;
+			startList = true;
+			//Find number of runners
+sleep(50);
+			numRunners = body.results.length;
+			
+			//Check if results exist and count results
+			numResults = 0;
+			startList = true;
+			for (i = 0; i < numRunners; i++) {
+				if (body.results[i].mark != "") {
+					numResults = numResults + 1;
+					startList=false;
+				}
+			}
+			if (numRunners<10 && numResults>0) {
+				numRows = numResults;
+			}
+
+            // Set title
+			var headerSubTitle = body.results[0].title;
+			var n = 0;
+			n = headerSubTitle.search("Section");
+			if (n < 1) {
+				n = headerSubTitle.search("Heat");
+			}
+			if (n < 1) {
+				n = headerSubTitle.search("Final");
+			}
+			if (n>0) {
+				headerTitle = headerSubTitle.substring(0,n);
+				headerSubTitle = headerSubTitle.substr(headerSubTitle.length - (headerSubTitle.length-n));
+				document.getElementById("event").innerHTML = headerTitle;
+				document.getElementById("eventinfo").innerHTML = headerSubTitle;
+			}
+			else
+			{
+				document.getElementById("event").innerHTML = body.results[0].title;
+				document.getElementById("eventinfo").innerHTML = "";
+			}
+
+
+            var i;
+			
+			if (startList==true) {
+				//Case for startlists
+				if (numRunners<10) {
+					//Case for one page of results
+					document.getElementById("databody1").style.top = "90px";
+					document.getElementById("databody2").style.top = "90px";
+					fillContents(numRunners);
+				}
+				else
+				{
+					//Case for more than 1 page of results
+					fillContents(numRunners);
+					pageTimer = setInterval(scrollResults, 30);
+					scrolling = true;
+					scrollResults();
+				}
+			}
+			else
+			{
+				//Case for results
+				if (numResults<10) {
+					//Case for one page of results
+					fillContents(numResults);
+					clearInterval(pageTimer);
+					document.getElementById("databody1").style.top = "90px";
+					document.getElementById("databody2").style.top = "90px";
+				}
+				else
+				{
+					//Case for more than 1 page of results
+					fillContents(numResults);
+					pageTimer = setInterval(scrollResults, 30);
+					scrolling = true;
+					scrollResults();
+				}
+			}
+		}
+		
+		function scrollResults() {
+			if (startList==true) {
+				n = numRunners;
+				scrollTimer(n);
+			}
+			else
+			{
+				n = numResults;
+				scrollTimer(n);
+			}
+		}
+				
+
+        bodyConn.onopen = function () {
+            console.log('Connected to Body');
+            bodyConn.send('Ping'); // Send the message 'Ping' to the server
+        };
+
+        // Log errors
+        bodyConn.onerror = function (error) {
+            console.log('WebSocket Error ' + error);
+        };
+
+		//Check if any changes arrived
+		if (dataChanged==true) {
+			updateBoard();
+		}
+    }
+	
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
+
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
+}
+    window.onload = initialize;
+</script>
+</body>
+
+</html>

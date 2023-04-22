@@ -2,7 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 let result = [];
-const eventNames = {};
+const eventFilenames = [];
+let eventNames = {};
 const csvData = {};
 
 const directoryPath = path.join(__dirname, 'Running Events');
@@ -21,45 +22,31 @@ function getContentType(filePath) {
   }
 }
 
+
+
 function onFileChange(event, filename) {
   const filePath = path.join(directoryPath, filename);
+  fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+      console.log('Error getting directory information.');
+    } else {
+      const filteredFiles = files.filter(file => {
+        return path.extname(file) === '.lff';
+      });
 
-  if (path.extname(filename) === '.lff') {
-    console.log(`File ${filePath} has been modified`);
-    fs.readFile(filePath, 'utf8', (error, data) => {
-      if (error) {
-        console.error(error);
-      } else {
-        const parsedFilename = path.parse(filename).base;
-
-        csvData[filename] = data;
-        // Look for which event the file represents
-        const lines = data.split('\n');
-        const firstLine = lines[0];
-        const wordsToTest = ['shot', 'discus', 'javelin', 'pole vault', 'hammer', 'long jump', 'triple jump', 'high jump'];
-        let foundWords = [];
-        for (const word of wordsToTest) {
-          if (firstLine.toLowerCase().includes(word.toLowerCase())) {
-              finalword = word.replace(/\s/g, "");
-            foundWords.push(finalword);
-          }
+      filteredFiles.forEach((file) => {
+        if (!eventFilenames.includes(file)) {
+          eventFilenames.push(file);
         }
-        if (foundWords.length > 0) {
-          for (const word of foundWords) {
-            if (!eventNames[word]) {
-              eventNames[word] = [];
-            }
-            eventNames[word].push(parsedFilename);
-          }
-        } else {
-          console.log('No matching word was found in the first line');
-        }
-
-        console.log(eventNames);
-      }
-    });
-  }
+      });
+    }
+  });
 }
+
+
+
+
+
 
 // Loop through all the files in the directory and listen for changes
 fs.readdir(directoryPath, (error, files) => {
@@ -72,7 +59,6 @@ fs.readdir(directoryPath, (error, files) => {
       onFileChange(null, filename);
 
       if (path.extname(filename) === '.lff') {
-        console.log(`Watching file: ${filename}`);
         fs.watch(filePath, onFileChange);
       }
     });
@@ -146,7 +132,8 @@ function parselines(lffdata) {
 
 async function horizontalJumpScoredList(fileList) {
     console.log('Horizontal Jump Score:');
-    
+    console.log(fileList);
+
     const results = await readlff(fileList);
     var resultarray = parselines(results);
     // Filter out rows that contain "DNS"
@@ -179,16 +166,23 @@ async function horizontalJumpScoredList(fileList) {
     // Add the place property to each object
     for (let i = 0; i < resultarray.length; i++) {
         let place = i + 1;
-        let row = {place, name: resultarray[i].name, team: resultarray[i].team, result: resultarray[i].result};
+        if (isNaN(resultarray[i].result[0])) {
+          resultarray[i].result[0] = "FOUL"
+        }
+        let row = {title: "Girl's Long Jump", place: place, lane: 1, name: resultarray[i].name, team: resultarray[i].team, mark: resultarray[i].result[0]};
         resultwithplace.push(row);
     }
-
+    console.log(resultwithplace);
     return resultwithplace;
+    
+
 }
 
 
 // Takes in an array of lif files and returns the results in an object.
 async function getResults(fileList, eventName) {
+
+  eventName = "longjump";
     let res;
     switch(eventName) {
         case 'longjump':
@@ -200,20 +194,50 @@ async function getResults(fileList, eventName) {
         default:
             console.log('Event Type hit default.');
     }
-
+    //console.log(res);
     return res;
 }
 
 async function searchFiles(searchTerm) {
   result = [];
+
+  console.log("Event Names: " + eventNames[searchTerm]);
+
   const results = await getResults(eventNames[searchTerm], searchTerm);
+  
   return results;
 }
+
+  // Function to create the eventNames object
+  function createEventNames(searchFor) {
+    const matchingFilenames = eventFilenames.filter(filename => filename.includes(searchFor));
+    eventNames[searchFor] = matchingFilenames;
+  }
+
+  console.log(eventNames);
 
 wss.on('connection', (ws) => {
   console.log('Client connected');
 
   ws.on('message', async (message) => {
+    message="019-1";
+
+    createEventNames(message);
+
+    // Regular expression to match two-digit numbers
+    const twoDigitNumberRegex = /\b(\d{2})\b/g;
+    // Regular expression to match the last number in a string
+    const lastNumberRegex = /(\d+)\b/;
+
+    // Replace the first two-digit number with a leading zero if it is less than three digits
+    const messageWithLeadingZero = message.replace(twoDigitNumberRegex, (match, p1) => {
+      if (p1.length < 3) {
+        return "0" + p1;
+      } else {
+        return match;
+      }
+    });
+
     const url = new URL(`http://localhost${message}`);
     message = message.toString();
     console.log('Message received:', message);

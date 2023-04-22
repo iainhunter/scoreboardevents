@@ -33,6 +33,11 @@ function onFileChange(event, filename) {
         const parsedFilename = path.parse(filename).base;
 
         csvData[filename] = data;
+        console.log(data);
+        const arr = data.split(',');
+        const eventTitle = arr[3];  
+        console.log(eventTitle);
+        
         // Look for which event the file represents
         const lines = data.split('\n');
         const firstLine = lines[0];
@@ -81,7 +86,7 @@ fs.readdir(directoryPath, (error, files) => {
 
 const WebSocket = require('ws');
 
-const wss = new WebSocket.Server({ port: 3000 });
+const wss = new WebSocket.Server({ port: 3001 });
 
 // Middleware function to add CORS headers to the response
 function addCorsHeaders(req, res) {
@@ -207,7 +212,7 @@ async function getResults(fileList, eventName) {
 async function searchFiles(searchTerm) {
   result = [];
   const results = await getResults(eventNames[searchTerm], searchTerm);
-  return results;
+  return eventNames;
 }
 
 wss.on('connection', (ws) => {
