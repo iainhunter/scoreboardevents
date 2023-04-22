@@ -181,7 +181,7 @@ async function horizontalJumpScoredList(fileList) {
 // Takes in an array of lif files and returns the results in an object.
 async function getResults(fileList, eventName) {
 
-  eventName = "highjump";
+  eventName = "longjump";
     let res;
     switch(eventName) {
         case 'longjump':
